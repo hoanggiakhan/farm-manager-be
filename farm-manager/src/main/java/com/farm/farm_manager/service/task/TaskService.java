@@ -29,7 +29,7 @@ public class TaskService {
         for(Task task : tasks){
             TaskResponse taskResponse = HandleMapper.INSTANCE.toTask(task);
             if (taskResponse != null) {
-                taskResponse.setNameEmployee(employee.getFirstName()+" "+employee.getLastName());
+                taskResponse.setNameEmployee(employee.getFullName());
                 if(task.getAnimal() != null){
                     taskResponse.setNameData(task.getAnimal().getAnimalName());
                 }
@@ -65,7 +65,7 @@ public class TaskService {
         Task task = HandleMapper.INSTANCE.toTaskRequest(request);
         Animal animal = animalRepository.findByAnimalName(request.getNameData());
         Crop crop = cropRepository.findByCropName(request.getNameData());
-        task.setEmployee(employeeRepository.findByNameEmployee(request.getNameEmployee()));
+        task.setEmployee(employeeRepository.findByFullName(request.getNameEmployee()));
         if(animal!=null){
             task.setAnimal(animal);
         }

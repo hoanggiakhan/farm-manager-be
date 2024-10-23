@@ -1,4 +1,4 @@
-package com.farm.farm_manager.dto.response;
+package com.farm.farm_manager.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -6,21 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-import java.util.Set;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EmployeeResponse {
-    int employeeId;
+public class FarmRequest {
+    String farmName;
+    String addressFarm;
     String fullName;
     String username;
     String password;
     String address;
     String phoneNumber;
-    int age;
-    LocalDate joinDate;
     String email;
 }

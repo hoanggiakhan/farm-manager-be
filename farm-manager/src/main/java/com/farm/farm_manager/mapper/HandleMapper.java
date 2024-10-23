@@ -1,5 +1,6 @@
 package com.farm.farm_manager.mapper;
 
+import com.farm.farm_manager.dto.request.FarmRequest;
 import com.farm.farm_manager.dto.request.TaskRequest;
 import com.farm.farm_manager.dto.response.*;
 import com.farm.farm_manager.entity.*;
@@ -14,4 +15,6 @@ public interface HandleMapper {
     EmployeeResponse toEmployee(Employee employee);
      AnimalResponse toAnimal(Animal animal);
      Task toTaskRequest(TaskRequest request);
+     Farm toFarmRequest(FarmRequest request);
+     Employee toFarmRequests(FarmRequest request);
 }

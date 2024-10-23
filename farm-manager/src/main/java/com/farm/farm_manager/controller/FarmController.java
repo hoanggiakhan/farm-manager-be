@@ -1,5 +1,6 @@
 package com.farm.farm_manager.controller;
 
+import com.farm.farm_manager.dto.request.FarmRequest;
 import com.farm.farm_manager.dto.response.AnimalResponse;
 import com.farm.farm_manager.dto.response.CropResponse;
 import com.farm.farm_manager.dto.response.EmployeeResponse;
@@ -10,10 +11,8 @@ import com.farm.farm_manager.service.farm.FarmService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,5 +38,9 @@ public class FarmController {
     @GetMapping("/inventories/{userId}")
     List<InventoryResponse> getALlInventoryByFarm(@PathVariable int userId){
         return farmService.getAllInventoryByFarm(userId);
+    }
+    @PostMapping
+    ResponseEntity<?> createFarm(@RequestBody FarmRequest request){
+      return farmService.createFarm(request);
     }
 }

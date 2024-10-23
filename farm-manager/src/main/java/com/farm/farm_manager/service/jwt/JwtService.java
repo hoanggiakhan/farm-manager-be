@@ -24,7 +24,7 @@ public class JwtService {
         Map<String,Object> claims = new HashMap<>();
         Employee user = userSecurityService.findByUsername(username);
         claims.put("id", user.getEmployeeId());
-        claims.put("lastName", user.getLastName());
+        claims.put("fullName", user.getFullName());
         Set<Role> roles = user.getRoles();
         if (roles.size() > 0) {
             for (Role role : roles) {

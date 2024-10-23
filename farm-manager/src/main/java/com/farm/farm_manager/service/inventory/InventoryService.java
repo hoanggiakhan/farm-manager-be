@@ -43,8 +43,9 @@ public class InventoryService {
        request.setInventory(inventory);
        itemsRepository.save(request);
    }
+    public void createInventory(){
 
-
+    }
    public void deleteItem(int itemId){
       itemsRepository.deleteById(itemId);
    }

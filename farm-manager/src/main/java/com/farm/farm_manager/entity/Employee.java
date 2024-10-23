@@ -20,8 +20,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int employeeId;
-    String firstName;
-    String lastName;
+    String fullName;
     String username;
     String password;
     String address;

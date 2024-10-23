@@ -20,7 +20,8 @@ public class Endpoints {
     public static final String[] publicPost = {
       "/employee/login",
             "/inventory/add-item/**",
-            "/task"
+            "/task",
+            "/farm"
     };
 
     public static final String[] deletePublic = {
