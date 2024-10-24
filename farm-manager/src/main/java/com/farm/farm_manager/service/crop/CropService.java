@@ -1,6 +1,7 @@
 package com.farm.farm_manager.service.crop;
 
 import com.farm.farm_manager.dao.CropRepository;
+import com.farm.farm_manager.dto.request.CropRequest;
 import com.farm.farm_manager.entity.Crop;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +18,11 @@ public class CropService {
 
     public List<Crop> getAllCrop(){
         return cropRepository.findAll();
+    }
+    public void deleteCrop(int cropId){
+        cropRepository.deleteById(cropId);
+    }
+    public Crop getCrop(CropRequest request){
+        return cropRepository.findByCropName(request.getCropName());
     }
 }

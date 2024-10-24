@@ -5,10 +5,7 @@ import com.farm.farm_manager.dao.FarmRepository;
 import com.farm.farm_manager.dao.InventoryRepository;
 import com.farm.farm_manager.dao.RoleRepository;
 import com.farm.farm_manager.dto.request.FarmRequest;
-import com.farm.farm_manager.dto.response.AnimalResponse;
-import com.farm.farm_manager.dto.response.CropResponse;
-import com.farm.farm_manager.dto.response.EmployeeResponse;
-import com.farm.farm_manager.dto.response.InventoryResponse;
+import com.farm.farm_manager.dto.response.*;
 import com.farm.farm_manager.entity.*;
 import com.farm.farm_manager.mapper.HandleMapper;
 import lombok.AccessLevel;
@@ -58,7 +55,9 @@ public class FarmService {
         List<EmployeeResponse> employeeResponses = new ArrayList<>();
         for(Employee employee : employees){
             EmployeeResponse employeeResponse = HandleMapper.INSTANCE.toEmployee(employee);
-            employeeResponses.add(employeeResponse);
+            if(employeeResponse.getEmployeeId()!=userId){
+                employeeResponses.add(employeeResponse);
+            }
         }
         return employeeResponses;
     }
@@ -75,14 +74,28 @@ public class FarmService {
         return inventoryResponses;
     }
 
+    public List<RoleResponse> getAlRoleByFarm(int userId){
+        Farm farm = getFarm(userId);
+        List<RoleResponse> roleResponses = new ArrayList<>();
+        for(Role role : farm.getRoles()){
+            RoleResponse roleResponse = new RoleResponse();
+            roleResponse.setRoleName(role.getRoleName());
+            roleResponse.setDescription(role.getDescription());
+            roleResponses.add(roleResponse);
+        }
+        return roleResponses;
+    }
+
     public ResponseEntity<?> createFarm(FarmRequest request){
-        Role role = new Role();
-        role.setRoleName("ADMIN");
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        roleRepository.save(role);
+
         Farm farm = HandleMapper.INSTANCE.toFarmRequest(request);
         farm.setAddress(request.getAddressFarm());
+        Role role = new Role();
+        role.setRoleName("Chủ nông trại");
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        role.setFarm(farm);
+        roleRepository.save(role);
         Employee employee = HandleMapper.INSTANCE.toFarmRequests(request);
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
         employee.setRoles(roles);

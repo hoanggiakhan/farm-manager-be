@@ -2,6 +2,8 @@ package com.farm.farm_manager.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,4 +19,7 @@ public class Role {
     @Id
     String roleName;
     String description;
+    @ManyToOne
+    @JoinColumn(name = "farm_id")
+    Farm farm;
 }

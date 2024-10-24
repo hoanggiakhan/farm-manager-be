@@ -1,9 +1,13 @@
 package com.farm.farm_manager.service.inventory;
 
+import com.farm.farm_manager.dao.EmployeeRepository;
+import com.farm.farm_manager.dao.FarmRepository;
 import com.farm.farm_manager.dao.InventoryRepository;
 import com.farm.farm_manager.dao.ItemsRepository;
 import com.farm.farm_manager.dto.request.ItemRequest;
 import com.farm.farm_manager.dto.response.ItemResponse;
+import com.farm.farm_manager.entity.Employee;
+import com.farm.farm_manager.entity.Farm;
 import com.farm.farm_manager.entity.Inventory;
 import com.farm.farm_manager.entity.Items;
 import com.farm.farm_manager.mapper.HandleMapper;
@@ -21,6 +25,8 @@ import java.util.List;
 public class InventoryService {
     InventoryRepository inventoryRepository;
     ItemsRepository itemsRepository;
+    EmployeeRepository employeeRepository;
+    FarmRepository farmRepository;
    public List<ItemResponse> getAllItemByInventory(int inventoryId){
        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
        List<Items> items = inventory.getItems();
@@ -43,8 +49,15 @@ public class InventoryService {
        request.setInventory(inventory);
        itemsRepository.save(request);
    }
-    public void createInventory(){
-
+    public void createInventory(int userId){
+        Employee employee = employeeRepository.findById(userId).orElseThrow();
+        Farm farm = farmRepository.findById(employee.getFarm().getFarmId()).orElseThrow(()-> new RuntimeException("Không tiìm thấy farm"));
+        Inventory inventory = new Inventory();
+        inventory.setFarm(farm);
+        inventoryRepository.save(inventory);
+    }
+    public void deleteInventory(int inventoryId){
+       inventoryRepository.deleteById(inventoryId);
     }
    public void deleteItem(int itemId){
       itemsRepository.deleteById(itemId);

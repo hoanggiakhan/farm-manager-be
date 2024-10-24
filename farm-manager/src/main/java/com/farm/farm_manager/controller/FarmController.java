@@ -1,12 +1,10 @@
 package com.farm.farm_manager.controller;
 
 import com.farm.farm_manager.dto.request.FarmRequest;
-import com.farm.farm_manager.dto.response.AnimalResponse;
-import com.farm.farm_manager.dto.response.CropResponse;
-import com.farm.farm_manager.dto.response.EmployeeResponse;
-import com.farm.farm_manager.dto.response.InventoryResponse;
+import com.farm.farm_manager.dto.response.*;
 import com.farm.farm_manager.entity.Crop;
 import com.farm.farm_manager.entity.Inventory;
+import com.farm.farm_manager.entity.Role;
 import com.farm.farm_manager.service.farm.FarmService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +40,9 @@ public class FarmController {
     @PostMapping
     ResponseEntity<?> createFarm(@RequestBody FarmRequest request){
       return farmService.createFarm(request);
+    }
+    @GetMapping("/role/{userId}")
+    List<RoleResponse> getAllRoleByFarm(@PathVariable int userId){
+        return farmService.getAlRoleByFarm(userId);
     }
 }

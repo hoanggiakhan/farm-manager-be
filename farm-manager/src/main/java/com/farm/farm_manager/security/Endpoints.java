@@ -13,18 +13,26 @@ public class Endpoints {
             "/farm/animals/**",
             "/farm/employees/**",
             "/farm/inventories/**",
+            "/farm/role/**",
             "/inventory/items/**",
-            "/task/**"
+            "/task/**",
+            "/crop/**"
     };
 
     public static final String[] publicPost = {
       "/employee/login",
             "/inventory/add-item/**",
             "/task",
-            "/farm"
+            "/farm",
+            "/inventory/add-inventory/**",
+            "/role/**",
     };
 
     public static final String[] deletePublic = {
-            "/inventory/delete-item/**"
+            "/inventory/delete-item/**",
+            "/inventory/delete-inventory/**",
+            "/task/delete-task/**",
+            "/employee/delete-employee/**",
+            "/crop/delete-crop/**"
     };
 }

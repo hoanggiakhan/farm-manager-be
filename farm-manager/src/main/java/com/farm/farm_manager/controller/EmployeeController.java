@@ -4,6 +4,7 @@ import com.farm.farm_manager.dto.request.LoginRequest;
 import com.farm.farm_manager.dto.response.EmployeeResponse;
 import com.farm.farm_manager.dto.response.JwtResponse;
 import com.farm.farm_manager.entity.Employee;
+import com.farm.farm_manager.entity.Role;
 import com.farm.farm_manager.service.employee.EmployeeService;
 import com.farm.farm_manager.service.jwt.JwtService;
 import lombok.AccessLevel;
@@ -50,9 +51,14 @@ public class EmployeeController {
         }
         return ResponseEntity.badRequest().body("Xác thực không thành công");
     }
-
+    @DeleteMapping("/delete-employee/{employeeId}")
+    void deleteEmployee(@PathVariable int employeeId){
+        employeeService.deleteEmployee(employeeId);
+    }
     @GetMapping("/my-info")
     Employee getMyInfo(){
         return employeeService.getMyInfo();
     }
+
+
 }

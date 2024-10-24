@@ -23,5 +23,6 @@ public class TaskRequest {
     String description;
     LocalDate date;
     String nameEmployee;
-    String nameData;
+    String animalName;
+    String cropName;
 }

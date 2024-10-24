@@ -18,7 +18,7 @@ public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int inventoryId;   // mã kho
-    @OneToMany(mappedBy = "inventory")
+    @OneToMany(mappedBy = "inventory" , cascade = CascadeType.ALL)
     List<Items> items;  // loại dụng cụ
     @ManyToOne
     @JoinColumn(name = "farm_id")

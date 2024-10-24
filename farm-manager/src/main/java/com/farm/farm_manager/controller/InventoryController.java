@@ -26,7 +26,14 @@ public class InventoryController {
     void addItem(@RequestBody Items items , @PathVariable int inventoryId){
         inventoryService.addItem(items , inventoryId);
     }
-
+   @PostMapping("/add-inventory/{userId}")
+   void addInventory(@PathVariable int userId){
+        inventoryService.createInventory(userId);
+   }
+   @DeleteMapping("/delete-inventory/{inventoryId}")
+   void deleteInventory(@PathVariable int inventoryId){
+        inventoryService.deleteInventory(inventoryId);
+   }
     @DeleteMapping("/delete-item/{itemId}")
 
     void deleteItem(@PathVariable int itemId){

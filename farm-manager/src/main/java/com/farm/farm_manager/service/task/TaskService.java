@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +32,10 @@ public class TaskService {
             if (taskResponse != null) {
                 taskResponse.setNameEmployee(employee.getFullName());
                 if(task.getAnimal() != null){
-                    taskResponse.setNameData(task.getAnimal().getAnimalName());
+                    taskResponse.setAnimalName(task.getAnimal().getAnimalName());
                 }
                 if(task.getCrop() != null){
-                    taskResponse.setNameData(task.getCrop().getCropName());
+                    taskResponse.setAnimalName(task.getCrop().getCropName());
                 }
                 if(task.getAnimal() != null && task.getCrop() != null){
                     throw new RuntimeException("sai cấu trúc");
@@ -63,8 +64,9 @@ public class TaskService {
 
     public void createTask(TaskRequest request){
         Task task = HandleMapper.INSTANCE.toTaskRequest(request);
-        Animal animal = animalRepository.findByAnimalName(request.getNameData());
-        Crop crop = cropRepository.findByCropName(request.getNameData());
+        task.setDate(LocalDate.now().plusDays(1));
+        Animal animal = animalRepository.findByAnimalName(request.getAnimalName());
+        Crop crop = cropRepository.findByCropName(request.getCropName());
         task.setEmployee(employeeRepository.findByFullName(request.getNameEmployee()));
         if(animal!=null){
             task.setAnimal(animal);
@@ -73,5 +75,9 @@ public class TaskService {
             task.setCrop(crop);
         }
         taskRepository.save(task);
+    }
+
+    public void deleteTask(int taskId){
+        taskRepository.deleteById(taskId);
     }
 }
