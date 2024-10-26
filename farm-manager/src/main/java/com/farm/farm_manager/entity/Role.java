@@ -1,9 +1,6 @@
 package com.farm.farm_manager.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +14,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int roleId;
     String roleName;
     String description;
     @ManyToOne

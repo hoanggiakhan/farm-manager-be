@@ -1,6 +1,5 @@
-package com.farm.farm_manager.entity;
+package com.farm.farm_manager.dto.request;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,19 +8,13 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Harvest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int harvestId; // mã phiếu thu hoạch
+public class HarvestRequest {
     LocalDate harvestDate; // ngày thu hoạch
     double quantity;  // số lượng
-    double sellPrice;
-    @ManyToOne
-    @JoinColumn(name = "crop_id")
-    Crop crop;
+    double sellPrice; // Giá bán
+    String cropName;
 }

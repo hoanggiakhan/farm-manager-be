@@ -24,6 +24,10 @@ public class CropController {
     void deleteCrop(@PathVariable int cropId){
         cropService.deleteCrop(cropId);
     }
+    @PostMapping("/{userId}")
+    void createCrop(@PathVariable int userId , @RequestBody CropRequest request){
+        cropService.createCrop(userId,request);
+    }
     @GetMapping("/one")
     Crop getCrop(@RequestBody CropRequest request){
       return   cropService.getCrop(request);

@@ -20,12 +20,14 @@ public class Endpoints {
     };
 
     public static final String[] publicPost = {
-      "/employee/login",
+            "/employee/**",
             "/inventory/add-item/**",
             "/task",
             "/farm",
             "/inventory/add-inventory/**",
             "/role/**",
+            "/crop/**",
+            "/animal/**"
     };
 
     public static final String[] deletePublic = {
@@ -33,6 +35,7 @@ public class Endpoints {
             "/inventory/delete-inventory/**",
             "/task/delete-task/**",
             "/employee/delete-employee/**",
-            "/crop/delete-crop/**"
+            "/crop/delete-crop/**",
+            "/animal/delete-animal/**"
     };
 }

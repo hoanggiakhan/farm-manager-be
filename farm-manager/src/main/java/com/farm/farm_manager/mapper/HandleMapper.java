@@ -1,5 +1,7 @@
 package com.farm.farm_manager.mapper;
 
+import com.farm.farm_manager.dto.request.CropRequest;
+import com.farm.farm_manager.dto.request.EmployeeRequest;
 import com.farm.farm_manager.dto.request.FarmRequest;
 import com.farm.farm_manager.dto.request.TaskRequest;
 import com.farm.farm_manager.dto.response.*;
@@ -17,4 +19,6 @@ public interface HandleMapper {
      Task toTaskRequest(TaskRequest request);
      Farm toFarmRequest(FarmRequest request);
      Employee toFarmRequests(FarmRequest request);
+     Employee toEmployeeRequest(EmployeeRequest request);
+     Crop toCropRequest(CropRequest request);
 }

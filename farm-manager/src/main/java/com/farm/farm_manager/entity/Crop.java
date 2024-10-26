@@ -24,10 +24,11 @@ public class Crop {
     double importPrice; // giá nhập
     int quantity;  // số lượng
     int status; // trạng thái
-    int age;
+    double age;
     LocalDate plantingDay; // ngày gieo trồng
     double acreage; // diện tích gieo trồng
     int productivity; // năng suất
+    int type;
     @ManyToOne
     @JoinColumn(name = "farm_id")
     Farm farm;

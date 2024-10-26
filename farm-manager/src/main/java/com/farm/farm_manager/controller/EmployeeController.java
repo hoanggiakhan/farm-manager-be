@@ -1,5 +1,6 @@
 package com.farm.farm_manager.controller;
 
+import com.farm.farm_manager.dto.request.EmployeeRequest;
 import com.farm.farm_manager.dto.request.LoginRequest;
 import com.farm.farm_manager.dto.response.EmployeeResponse;
 import com.farm.farm_manager.dto.response.JwtResponse;
@@ -60,5 +61,8 @@ public class EmployeeController {
         return employeeService.getMyInfo();
     }
 
-
+    @PostMapping("/{userId}")
+    void createEmployee(@PathVariable int userId , @RequestBody EmployeeRequest request){
+        employeeService.createEmployee(userId,request);
+    }
 }

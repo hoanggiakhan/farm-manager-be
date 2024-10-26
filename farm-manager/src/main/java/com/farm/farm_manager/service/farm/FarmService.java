@@ -14,10 +14,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +53,15 @@ public class FarmService {
         List<EmployeeResponse> employeeResponses = new ArrayList<>();
         for(Employee employee : employees){
             EmployeeResponse employeeResponse = HandleMapper.INSTANCE.toEmployee(employee);
+            if (employee.getRoles() != null) {
+                Set<String> nameRole = new HashSet<>();
+                for (Role role : employee.getRoles()) {
+                    nameRole.add(role.getRoleName());
+                }
+                employeeResponse.setNameRole(nameRole);
+            } else {
+                employeeResponse.setNameRole(Collections.emptySet()); // Nếu không có vai trò, gán tập rỗng
+            }
             if(employeeResponse.getEmployeeId()!=userId){
                 employeeResponses.add(employeeResponse);
             }
@@ -95,7 +102,6 @@ public class FarmService {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         role.setFarm(farm);
-        roleRepository.save(role);
         Employee employee = HandleMapper.INSTANCE.toFarmRequests(request);
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
         employee.setRoles(roles);
@@ -106,6 +112,7 @@ public class FarmService {
         Inventory inventory = new Inventory();
         inventory.setFarm(farm);
         farmRepository.save(farm);
+        roleRepository.save(role);
         inventoryRepository.save(inventory);
         employeeRepository.save(employee);
         return ResponseEntity.ok("Đăng ký thành công");

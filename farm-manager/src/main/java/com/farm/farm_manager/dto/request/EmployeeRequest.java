@@ -1,5 +1,8 @@
-package com.farm.farm_manager.dto.response;
+package com.farm.farm_manager.dto.request;
 
+import com.farm.farm_manager.entity.Role;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +13,10 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EmployeeResponse {
-    int employeeId;
+public class EmployeeRequest {
     String fullName;
     String username;
     String password;
@@ -23,5 +25,5 @@ public class EmployeeResponse {
     int age;
     LocalDate joinDate;
     String email;
-    Set<String> nameRole;
+    String nameRole;
 }

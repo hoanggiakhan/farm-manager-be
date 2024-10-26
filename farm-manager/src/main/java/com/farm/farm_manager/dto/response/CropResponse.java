@@ -19,8 +19,9 @@ public class CropResponse {
     double importPrice; // giá nhập
     int quantity;  // số lượng
     int status; // trạng thái
-    int age;
+    double age;
     LocalDate plantingDay; // ngày gieo trồng
     double acreage; // diện tích gieo trồng
     int productivity; // năng suất
+    int type;
 }

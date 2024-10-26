@@ -19,6 +19,7 @@ public class AnimalResponse {
     double importPrice;  // giá nhập
     int quantity;  // số lượng
     int status;  // trạng thái
-    int age;
+    double age;
     LocalDate buyDate;
+    int type;
 }

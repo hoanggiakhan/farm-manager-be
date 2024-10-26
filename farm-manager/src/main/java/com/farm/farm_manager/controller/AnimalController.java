@@ -5,9 +5,7 @@ import com.farm.farm_manager.service.animal.AnimalService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +19,13 @@ public class AnimalController {
     @GetMapping
     List<Animal> getAllAnimal(){
         return animalService.getAllAnimal();
+    }
+    @PostMapping("/{userId}")
+    void createAnimal(@PathVariable int userId , @RequestBody Animal animal){
+        animalService.createAnimal(userId , animal);
+    }
+    @DeleteMapping("/delete-animal/{animalId}")
+    void deleteAnimal(@PathVariable int animalId){
+        animalService.deleteAnimal(animalId);
     }
 }

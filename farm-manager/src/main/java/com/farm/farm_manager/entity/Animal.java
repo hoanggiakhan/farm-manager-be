@@ -24,13 +24,12 @@ public class Animal {
     double importPrice;  // giá nhập
     int quantity;  // số lượng
     int status;  // trạng thái
-    int age;
+    double age;
+    int type;
     LocalDate buyDate;
     @ManyToOne
     @JoinColumn(name = "farm_id")
     Farm farm;
     @OneToMany(mappedBy = "animal" , cascade = CascadeType.ALL)
     List<Task> tasks;
-    @OneToMany(mappedBy = "animal" , cascade = CascadeType.ALL)
-    List<Harvest> harvests;
 }
