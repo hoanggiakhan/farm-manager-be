@@ -1,11 +1,13 @@
 package com.farm.farm_manager.controller;
 
+import com.farm.farm_manager.dto.request.AttendanceRequest;
 import com.farm.farm_manager.dto.request.EmployeeRequest;
 import com.farm.farm_manager.dto.request.LoginRequest;
-import com.farm.farm_manager.dto.response.EmployeeResponse;
-import com.farm.farm_manager.dto.response.JwtResponse;
+import com.farm.farm_manager.dto.response.*;
+import com.farm.farm_manager.entity.Attendance;
 import com.farm.farm_manager.entity.Employee;
 import com.farm.farm_manager.entity.Role;
+import com.farm.farm_manager.service.AttendanceService;
 import com.farm.farm_manager.service.employee.EmployeeService;
 import com.farm.farm_manager.service.jwt.JwtService;
 import lombok.AccessLevel;
@@ -18,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -28,6 +31,7 @@ public class EmployeeController {
     EmployeeService employeeService;
     AuthenticationManager authenticationManager;
     JwtService jwtUtils;
+    AttendanceService attendanceService;
     @GetMapping
     List<EmployeeResponse> getAllEmployee(){
         return employeeService.getAllEmployee();
@@ -64,5 +68,47 @@ public class EmployeeController {
     @PostMapping("/{userId}")
     void createEmployee(@PathVariable int userId , @RequestBody EmployeeRequest request){
         employeeService.createEmployee(userId,request);
+    }
+    @GetMapping("/notifications/{userId}")
+    List<NotificationResponse> getAllNotification(@PathVariable int userId){
+      return employeeService.getAllNotification(userId);
+    }
+    @PutMapping("/read/{idNotification}")
+    void NotificationRead(@PathVariable String idNotification){
+        employeeService.NotificationRead(idNotification);
+    }
+    @DeleteMapping("/delete-notifications/{userId}")
+    void deleteAllNotification(@PathVariable int userId){
+        employeeService.deleteAllNotification(userId);
+    }
+
+    @GetMapping("/task/{userId}")
+    List<TaskResponse> getAllTask(@PathVariable int userId){
+      return employeeService.getAllTaskByEmployee(userId);
+    }
+    @PutMapping("/task/complete/{taskId}")
+    void completeTask(@PathVariable int taskId){
+        employeeService.completeTask(taskId);
+    }
+    @PostMapping("/check-in/{userId}")
+    void checkIn( @PathVariable int userId){
+      employeeService.checkIn(userId);
+    }
+    @PutMapping("/check-out/{idAttendance}")
+    void checkOut(@PathVariable String idAttendance){
+        employeeService.checkOut(idAttendance);
+    }
+    @GetMapping("/get-attendances/{userId}")
+    List<AttendanceResponse> getById(@PathVariable int userId){
+        return attendanceService.getAttendanceByEmployee(userId);
+    }
+    @PutMapping("/update-user/{userId}")
+    void updateEmployee(@RequestBody EmployeeRequest request ,@PathVariable int userId){
+        employeeService.updateEmployee(request,userId);
+    }
+
+    @PutMapping("/total-salary/{userId}")
+    void totalSalary(@RequestBody double totalSalary , @PathVariable int userId){
+        employeeService.totalSalary(userId,totalSalary);
     }
 }

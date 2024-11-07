@@ -21,9 +21,9 @@ public class TaskController {
         return taskService.getAllTaskByFarm(userId);
     }
 
-    @PostMapping
-    void createTask(@RequestBody TaskRequest request){
-        taskService.createTask(request);
+    @PostMapping("/{userId}")
+    void createTask(@RequestBody TaskRequest request , @PathVariable int userId){
+        taskService.createTask(request,userId);
     }
 
     @DeleteMapping("/delete-task/{taskId}")

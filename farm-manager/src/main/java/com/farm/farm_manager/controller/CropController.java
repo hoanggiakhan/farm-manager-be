@@ -32,4 +32,8 @@ public class CropController {
     Crop getCrop(@RequestBody CropRequest request){
       return   cropService.getCrop(request);
     }
+    @PutMapping("/update/{cropId}")
+    void updateCrop(@RequestBody CropRequest request , @PathVariable int cropId){
+        cropService.updateCrop(request,cropId);
+    }
 }

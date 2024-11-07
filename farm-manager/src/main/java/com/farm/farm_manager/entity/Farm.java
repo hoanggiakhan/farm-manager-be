@@ -28,6 +28,6 @@ public class Farm {
     List<Employee> employees;
     @OneToMany(mappedBy = "farm" , cascade = CascadeType.ALL)
     List<Inventory> inventories;
-    @OneToMany(mappedBy = "farm" ,cascade = CascadeType.ALL)
-    List<Role> roles;
+    @OneToMany(mappedBy = "farm" , cascade = CascadeType.ALL)
+    List<Transaction> transactions;
 }

@@ -10,6 +10,7 @@ import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.function.Function;
@@ -32,8 +33,8 @@ public class JwtService {
                     claims.put("role", "ADMIN");
                     break;
                 }
-                if (role.getRoleName().equals("CUSTOMER")) {
-                    claims.put("role", "CUSTOMER");
+                if (role.getRoleName().equals("EMPLOYEE")) {
+                    claims.put("role", "EMPLOYEE");
                     break;
                 }
             }
@@ -73,5 +74,15 @@ public class JwtService {
     }
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public String buildScope(Employee user){
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if (!CollectionUtils.isEmpty(user.getRoles()))
+            user.getRoles().forEach(role -> {
+                stringJoiner.add(role.getRoleName());
+            });
+
+        return stringJoiner.toString();
     }
 }

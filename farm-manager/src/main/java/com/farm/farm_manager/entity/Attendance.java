@@ -8,21 +8,22 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Transaction {
+public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String transactionId;
-    String type;
-    String description;
-    double money;
+    String id;
     LocalDate date;
-    @ManyToOne
-    @JoinColumn(name = "farm_id")
-    Farm farm;
+    LocalTime checkInTime;
+    LocalTime checkOutTime;
+    double totalMerits;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    Employee employee;
 }

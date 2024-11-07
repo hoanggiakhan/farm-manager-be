@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class RoleController {
     RoleService roleService;
 
-    @PostMapping("/{userId}")
-    void createRole(@RequestBody Role role , @PathVariable int userId){
-        roleService.createRole(userId,role);
-    }
+//    @PostMapping("/{userId}")
+//    void createRole(@RequestBody Role role , @PathVariable int userId){
+//        roleService.createRole(userId,role);
+//    }
 }

@@ -1,21 +1,16 @@
 package com.farm.farm_manager.service.inventory;
 
-import com.farm.farm_manager.dao.EmployeeRepository;
-import com.farm.farm_manager.dao.FarmRepository;
-import com.farm.farm_manager.dao.InventoryRepository;
-import com.farm.farm_manager.dao.ItemsRepository;
+import com.farm.farm_manager.dao.*;
 import com.farm.farm_manager.dto.request.ItemRequest;
 import com.farm.farm_manager.dto.response.ItemResponse;
-import com.farm.farm_manager.entity.Employee;
-import com.farm.farm_manager.entity.Farm;
-import com.farm.farm_manager.entity.Inventory;
-import com.farm.farm_manager.entity.Items;
+import com.farm.farm_manager.entity.*;
 import com.farm.farm_manager.mapper.HandleMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +22,8 @@ public class InventoryService {
     ItemsRepository itemsRepository;
     EmployeeRepository employeeRepository;
     FarmRepository farmRepository;
+    TransactionRepository transactionRepository;
+    NotificationRepository notificationRepository;
    public List<ItemResponse> getAllItemByInventory(int inventoryId){
        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
        List<Items> items = inventory.getItems();
@@ -47,6 +44,14 @@ public class InventoryService {
    public void addItem(Items request, int inventoryId){
        Inventory inventory = inventoryRepository.findById(inventoryId).orElseThrow();
        request.setInventory(inventory);
+       Transaction transaction = new Transaction();
+       transaction.setDescription("Mua "+request.getQuantity()+" "+request.getUnit()+" "+request.getItemName());
+       transaction.setMoney(request.getImportPrice()* request.getQuantity());
+       transaction.setType("Chi phí");
+       transaction.setDate(LocalDate.now());
+       transaction.setFarm(inventory.getFarm());
+       transactionRepository.save(transaction);
+
        itemsRepository.save(request);
    }
     public void createInventory(int userId){
@@ -55,6 +60,12 @@ public class InventoryService {
         Inventory inventory = new Inventory();
         inventory.setFarm(farm);
         inventoryRepository.save(inventory);
+        Notifications notifications = new Notifications();
+        notifications.setStatus(0);
+        notifications.setContent("Bạn vừa thêm kho cho nông trại");
+        notifications.setEmployee(employee);
+        notifications.setDate(LocalDate.now());
+        notificationRepository.save(notifications);
     }
     public void deleteInventory(int inventoryId){
        inventoryRepository.deleteById(inventoryId);

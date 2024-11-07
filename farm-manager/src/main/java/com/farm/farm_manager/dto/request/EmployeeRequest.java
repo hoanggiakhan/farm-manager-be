@@ -25,5 +25,6 @@ public class EmployeeRequest {
     int age;
     LocalDate joinDate;
     String email;
+    double salary;
     String nameRole;
 }

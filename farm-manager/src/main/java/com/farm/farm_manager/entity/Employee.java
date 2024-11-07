@@ -28,6 +28,7 @@ public class Employee {
     int age;
     LocalDate joinDate;
     String email;
+    double salary;
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Role> roles;
     @ManyToOne
@@ -35,4 +36,8 @@ public class Employee {
     Farm farm;
     @OneToMany(mappedBy = "employee")
     List<Task> tasks;
+    @OneToMany(mappedBy = "employee")
+    List<Notifications> notifications;
+    @OneToMany(mappedBy = "employee",fetch = FetchType.EAGER)
+    List<Attendance> attendances;
 }

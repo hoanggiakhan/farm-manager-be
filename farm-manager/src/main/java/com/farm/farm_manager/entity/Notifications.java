@@ -14,15 +14,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Transaction {
+public class Notifications {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String transactionId;
-    String type;
-    String description;
-    double money;
+    String id;
+    String content;
     LocalDate date;
+    int status;
     @ManyToOne
-    @JoinColumn(name = "farm_id")
-    Farm farm;
+    @JoinColumn(name = "employee_id")
+    Employee employee;
 }

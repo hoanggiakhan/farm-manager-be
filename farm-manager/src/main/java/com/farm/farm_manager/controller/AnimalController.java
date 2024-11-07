@@ -1,5 +1,6 @@
 package com.farm.farm_manager.controller;
 
+import com.farm.farm_manager.dto.request.SellDataAnimal;
 import com.farm.farm_manager.entity.Animal;
 import com.farm.farm_manager.service.animal.AnimalService;
 import lombok.AccessLevel;
@@ -27,5 +28,9 @@ public class AnimalController {
     @DeleteMapping("/delete-animal/{animalId}")
     void deleteAnimal(@PathVariable int animalId){
         animalService.deleteAnimal(animalId);
+    }
+    @PutMapping("/sell-animal/{animalId}/{userId}")
+    void sellAnimal(@PathVariable int animalId , @RequestBody SellDataAnimal sellDataAnimal , @PathVariable int userId){
+        animalService.sellAnimal(sellDataAnimal , animalId , userId);
     }
 }

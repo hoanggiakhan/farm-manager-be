@@ -1,9 +1,6 @@
 package com.farm.farm_manager.service.farm;
 
-import com.farm.farm_manager.dao.EmployeeRepository;
-import com.farm.farm_manager.dao.FarmRepository;
-import com.farm.farm_manager.dao.InventoryRepository;
-import com.farm.farm_manager.dao.RoleRepository;
+import com.farm.farm_manager.dao.*;
 import com.farm.farm_manager.dto.request.FarmRequest;
 import com.farm.farm_manager.dto.response.*;
 import com.farm.farm_manager.entity.*;
@@ -15,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -26,6 +24,7 @@ public class FarmService {
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
     InventoryRepository inventoryRepository;
+    NotificationRepository notificationRepository;
     public List<CropResponse> getAllCropByFarm(int userId){
         Farm farm = getFarm(userId);
         List<Crop> crops = farm.getCrops();
@@ -80,28 +79,35 @@ public class FarmService {
         }
         return inventoryResponses;
     }
-
-    public List<RoleResponse> getAlRoleByFarm(int userId){
+   public List<TransactionResponse> getAllTransactionByFarm(int userId){
         Farm farm = getFarm(userId);
-        List<RoleResponse> roleResponses = new ArrayList<>();
-        for(Role role : farm.getRoles()){
-            RoleResponse roleResponse = new RoleResponse();
-            roleResponse.setRoleName(role.getRoleName());
-            roleResponse.setDescription(role.getDescription());
-            roleResponses.add(roleResponse);
-        }
-        return roleResponses;
-    }
+       List<TransactionResponse> transactionResponses = new ArrayList<>();
+       for(Transaction transaction : farm.getTransactions()){
+           TransactionResponse transactionResponse = HandleMapper.INSTANCE.toTransaction(transaction);
+           transactionResponses.add(transactionResponse);
+       }
+        return transactionResponses;
+   }
+//    public List<RoleResponse> getAlRoleByFarm(int userId){
+//        Farm farm = getFarm(userId);
+//        List<RoleResponse> roleResponses = new ArrayList<>();
+//        for(Role role : farm.getRoles()){
+//            RoleResponse roleResponse = new RoleResponse();
+//            roleResponse.setRoleName(role.getRoleName());
+//            roleResponse.setDescription(role.getDescription());
+//            roleResponses.add(roleResponse);
+//        }
+//        return roleResponses;
+//    }
 
     public ResponseEntity<?> createFarm(FarmRequest request){
 
         Farm farm = HandleMapper.INSTANCE.toFarmRequest(request);
         farm.setAddress(request.getAddressFarm());
         Role role = new Role();
-        role.setRoleName("Chủ nông trại");
+        role.setRoleName("ADMIN");
         Set<Role> roles = new HashSet<>();
         roles.add(role);
-        role.setFarm(farm);
         Employee employee = HandleMapper.INSTANCE.toFarmRequests(request);
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
         employee.setRoles(roles);
@@ -112,9 +118,17 @@ public class FarmService {
         Inventory inventory = new Inventory();
         inventory.setFarm(farm);
         farmRepository.save(farm);
-        roleRepository.save(role);
+        if(!roleRepository.existsByRoleName("ADMIN")){
+            roleRepository.save(role);
+        }
         inventoryRepository.save(inventory);
         employeeRepository.save(employee);
+        Notifications notifications = new Notifications();
+        notifications.setStatus(0);
+        notifications.setContent("Chào mừng bạn đến với trang web của chúng tôi");
+        notifications.setDate(LocalDate.now());
+        notifications.setEmployee(employee);
+        notificationRepository.save(notifications);
         return ResponseEntity.ok("Đăng ký thành công");
     }
     public Farm getFarm(int userId){
@@ -122,4 +136,11 @@ public class FarmService {
         Farm farm = farmRepository.findById(employee.getFarm().getFarmId()).orElseThrow(()-> new RuntimeException("Không tiìm thấy farm"));
         return farm;
     }
+
+
+//    public ReportResponse report(int userId){
+//        Employee employee = employeeRepository.findById(userId).orElseThrow();
+//        Farm farm = farmRepository.findById(employee.getFarm().getFarmId()).orElseThrow();
+//
+//    }
 }

@@ -1,4 +1,4 @@
-package com.farm.farm_manager.dto.request;
+package com.farm.farm_manager.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,13 +9,12 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDate;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class HarvestRequest {
-    int harvestId;
-    LocalDate harvestDate; // ngày thu hoạch
-    double quantity;  // số lượng
-    double sellPrice; // Giá bán
-    String cropName;
+public class NotificationResponse {
+    String id;
+    String content;
+    LocalDate date;
+    int status;
 }

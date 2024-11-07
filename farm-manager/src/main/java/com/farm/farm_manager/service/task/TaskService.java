@@ -23,6 +23,7 @@ public class TaskService {
     AnimalRepository animalRepository;
     EmployeeRepository employeeRepository;
     FarmRepository farmRepository;
+    NotificationRepository notificationRepository;
     public List<TaskResponse> getAllTaskByUserId(int userId){
         Employee employee = employeeRepository.findById(userId).orElseThrow();
         List<Task> tasks = employee.getTasks();
@@ -62,21 +63,39 @@ public class TaskService {
           return taskResponses;
     }
 
-    public void createTask(TaskRequest request){
+    public void createTask(TaskRequest request, int userId) {
         Task task = HandleMapper.INSTANCE.toTaskRequest(request);
         task.setDate(LocalDate.now().plusDays(1));
-        Animal animal = animalRepository.findByAnimalName(request.getAnimalName());
-        Crop crop = cropRepository.findByCropName(request.getCropName());
-        task.setEmployee(employeeRepository.findByFullName(request.getNameEmployee()));
-        if(animal!=null){
-            task.setAnimal(animal);
+        Employee employee = employeeRepository.findById(userId).orElseThrow();
+        Farm farm = farmRepository.findById(employee.getFarm().getFarmId()).orElseThrow();
+        if (request.getAnimalName() != null && !request.getAnimalName().isBlank() &&
+                (request.getCropName() == null || request.getCropName().isBlank())) {
+            farm.getAnimals().stream()
+                    .filter(animal -> animal.getAnimalName().equals(request.getAnimalName()))
+                    .findFirst()
+                    .ifPresent(task::setAnimal);
         }
-        if(crop!=null){
-            task.setCrop(crop);
+        if (request.getCropName() != null && !request.getCropName().isBlank() &&
+                (request.getAnimalName() == null || request.getAnimalName().isBlank())) {
+            farm.getCrops().stream()
+                    .filter(crop -> crop.getCropName().equals(request.getCropName()))
+                    .findFirst()
+                    .ifPresent(task::setCrop);
+        }
+        if (request.getNameEmployee() != null && !request.getNameEmployee().isBlank()) {
+            farm.getEmployees().stream()
+                    .filter(emp -> emp.getFullName().equals(request.getNameEmployee()))
+                    .findFirst()
+                    .ifPresent(task::setEmployee);
         }
         taskRepository.save(task);
+        Notifications notifications = new Notifications();
+        notifications.setStatus(0);
+        notifications.setContent("Bạn vừa thêm công việc "+request.getTitle()+" cho "+request.getNameEmployee());
+        notifications.setEmployee(employee);
+        notifications.setDate(LocalDate.now());
+        notificationRepository.save(notifications);
     }
-
     public void deleteTask(int taskId){
         taskRepository.deleteById(taskId);
     }

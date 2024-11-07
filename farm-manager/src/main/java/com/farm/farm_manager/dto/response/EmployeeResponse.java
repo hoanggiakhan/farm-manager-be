@@ -23,5 +23,6 @@ public class EmployeeResponse {
     int age;
     LocalDate joinDate;
     String email;
+    double salary;
     Set<String> nameRole;
 }

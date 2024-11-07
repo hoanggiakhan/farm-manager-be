@@ -59,7 +59,11 @@ public class SecurityConfig {
                 config->config
                         .requestMatchers(HttpMethod.GET, Endpoints.publicGet).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoints.publicPost).permitAll()
-                        .requestMatchers(HttpMethod.DELETE , Endpoints.deletePublic).permitAll()
+                        .requestMatchers(HttpMethod.PUT , Endpoints.publicPut).permitAll()
+                        .requestMatchers(HttpMethod.GET , Endpoints.adminGet).permitAll()
+                        .requestMatchers(HttpMethod.DELETE , Endpoints.adminDelete).permitAll()
+                        .requestMatchers(HttpMethod.PUT, Endpoints.adminPut).permitAll()
+                        .requestMatchers(HttpMethod.POST , Endpoints.adminPost).permitAll()
                         .anyRequest().authenticated()
         );
         // Cấu hình cors
@@ -94,15 +98,15 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    public CorsFilter corsFilter(){
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.addAllowedOrigin("http://localhost:3000");
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**" , corsConfiguration);
-        return new CorsFilter(urlBasedCorsConfigurationSource);
-    }
+//    @Bean
+//    public CorsFilter corsFilter(){
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.addAllowedHeader("*");
+//        corsConfiguration.addAllowedMethod("*");
+//        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+//        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+//        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**" , corsConfiguration);
+//        return new CorsFilter(urlBasedCorsConfigurationSource);
+//    }
 
 }

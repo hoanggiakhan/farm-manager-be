@@ -19,10 +19,10 @@ public class RoleService {
     FarmRepository farmRepository;
     EmployeeRepository employeeRepository;
 
-    public void createRole(int userId , Role role){
-        Employee employee = employeeRepository.findById(userId).orElseThrow();
-        Farm farm = farmRepository.findById(employee.getFarm().getFarmId()).orElseThrow();
-        role.setFarm(farm);
-        roleRepository.save(role);
-    }
+//    public void createRole(int userId , Role role){
+//        Employee employee = employeeRepository.findById(userId).orElseThrow();
+//        Farm farm = farmRepository.findById(employee.getFarm().getFarmId()).orElseThrow();
+//        role.setFarm(farm);
+//        roleRepository.save(role);
+//    }
 }
