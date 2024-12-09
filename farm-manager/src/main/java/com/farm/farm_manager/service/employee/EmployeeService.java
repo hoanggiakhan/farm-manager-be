@@ -160,12 +160,10 @@ public class EmployeeService {
        attendance.setCheckOutTime(LocalTime.now());
        LocalTime start = LocalTime.of(attendance.getCheckInTime().getHour(),attendance.getCheckInTime().getMinute());
        LocalTime end = LocalTime.of(LocalTime.now().getHour(),LocalTime.now().getMinute());
-        // Tính khoảng cách giữa hai thời gian
         Duration duration = Duration.between(start, end);
-        // Chuyển đổi khoảng cách thành giờ thập phân
         double hours = duration.toMinutes() / 60.0;
         double totalMerits = hours / 8;
-// Định dạng đến 2 chữ số thập phân
+       // Định dạng đến 2 chữ số thập phân
         DecimalFormat df = new DecimalFormat("#.00");
         String formattedTotalMerits = df.format(totalMerits);
 
