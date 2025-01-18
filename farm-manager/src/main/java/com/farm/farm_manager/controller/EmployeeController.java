@@ -1,12 +1,9 @@
 package com.farm.farm_manager.controller;
 
-import com.farm.farm_manager.dto.request.AttendanceRequest;
 import com.farm.farm_manager.dto.request.EmployeeRequest;
 import com.farm.farm_manager.dto.request.LoginRequest;
 import com.farm.farm_manager.dto.response.*;
-import com.farm.farm_manager.entity.Attendance;
 import com.farm.farm_manager.entity.Employee;
-import com.farm.farm_manager.entity.Role;
 import com.farm.farm_manager.service.AttendanceService;
 import com.farm.farm_manager.service.employee.EmployeeService;
 import com.farm.farm_manager.service.jwt.JwtService;
@@ -20,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -47,6 +43,7 @@ public class EmployeeController {
             );
             // Nếu xác thực thành công
             if (authentication.isAuthenticated()) {
+
                 // Tạo token cho người dùng
                 final String jwtToken = jwtUtils.generateToken(loginRequest.getUsername());
                 return ResponseEntity.ok(new JwtResponse(jwtToken));

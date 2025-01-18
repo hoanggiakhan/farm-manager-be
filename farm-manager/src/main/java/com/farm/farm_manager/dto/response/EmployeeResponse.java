@@ -24,5 +24,5 @@ public class EmployeeResponse {
     LocalDate joinDate;
     String email;
     double salary;
-    Set<String> nameRole;
+    String role;
 }

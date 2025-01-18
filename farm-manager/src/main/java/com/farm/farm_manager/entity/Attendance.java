@@ -19,11 +19,13 @@ public class Attendance {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
+
     LocalDate date;
     LocalTime checkInTime;
     LocalTime checkOutTime;
     double totalMerits;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     Employee employee;
 }

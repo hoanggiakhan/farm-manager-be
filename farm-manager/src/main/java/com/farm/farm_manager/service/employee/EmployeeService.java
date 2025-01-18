@@ -1,7 +1,6 @@
 package com.farm.farm_manager.service.employee;
 
 import com.farm.farm_manager.dao.*;
-import com.farm.farm_manager.dto.request.AttendanceRequest;
 import com.farm.farm_manager.dto.request.EmployeeRequest;
 import com.farm.farm_manager.dto.response.AttendanceResponse;
 import com.farm.farm_manager.dto.response.EmployeeResponse;
@@ -34,25 +33,12 @@ public class EmployeeService {
      PasswordEncoder passwordEncoder;
      NotificationRepository notificationRepository;
      TaskRepository taskRepository;
-     RoleRepository roleRepository;
     public List<EmployeeResponse> getAllEmployee() {
         List<Employee> employees = employeeRepository.findAll();
         List<EmployeeResponse> employeeResponses = new ArrayList<>();
 
         for (Employee employee : employees) {
             EmployeeResponse employeeResponse = HandleMapper.INSTANCE.toEmployee(employee);
-
-            // Kiểm tra null trước khi lấy danh sách vai trò
-            if (employee.getRoles() != null) {
-                Set<String> nameRole = new HashSet<>();
-                for (Role role : employee.getRoles()) {
-                    nameRole.add(role.getRoleName());
-                }
-                employeeResponse.setNameRole(nameRole);
-            } else {
-                employeeResponse.setNameRole(Collections.emptySet()); // Nếu không có vai trò, gán tập rỗng
-            }
-
             employeeResponses.add(employeeResponse);
         }
 
@@ -73,28 +59,18 @@ public class EmployeeService {
     public void createEmployee(int userId , EmployeeRequest request){
        Employee employee = employeeRepository.findById(userId).orElseThrow();
         Farm farm = farmRepository.findById(employee.getFarm().getFarmId()).orElseThrow();
-        Set<Role> roles = new HashSet<>();
-        Role role = roleRepository.findByRoleName("EMPLOYEE");
-        roles.add(role);
-//        for(Role role : farm.getRoles()){
-//            if(role.getRoleName().equals(request.getNameRole())){
-//                roles.add(role);
-//            }
-//        }
-       if(!roleRepository.existsByRoleName("EMPLOYEE")){
-           roleRepository.save(role);
-       }
+
         if(employeeRepository.existsByUsername(request.getUsername())){
             throw new RuntimeException("username đã tồn tại");
         }
         Employee newEmployee = HandleMapper.INSTANCE.toEmployeeRequest(request);
         newEmployee.setFullName(request.getFullName());
         newEmployee.setFarm(farm);
-        newEmployee.setRoles(roles);
+        newEmployee.setRole("EMPLOYEE");
         newEmployee.setPassword(passwordEncoder.encode(request.getPassword()));
         Notifications notifications = new Notifications();
         notifications.setDate(LocalDate.now());
-        notifications.setContent("Bạn vừa thêm 1 nhân viên với chức vụ là "+request.getNameRole());
+        notifications.setContent("Bạn vừa thêm 1 nhân viên với chức vụ là Nhân viên");
         notifications.setStatus(0);
         notifications.setEmployee(employee);
         notificationRepository.save(notifications);

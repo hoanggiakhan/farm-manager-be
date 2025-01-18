@@ -22,7 +22,6 @@ public class FarmService {
     FarmRepository farmRepository;
     EmployeeRepository employeeRepository;
     PasswordEncoder passwordEncoder;
-    RoleRepository roleRepository;
     InventoryRepository inventoryRepository;
     NotificationRepository notificationRepository;
     public List<CropResponse> getAllCropByFarm(int userId){
@@ -52,15 +51,6 @@ public class FarmService {
         List<EmployeeResponse> employeeResponses = new ArrayList<>();
         for(Employee employee : employees){
             EmployeeResponse employeeResponse = HandleMapper.INSTANCE.toEmployee(employee);
-            if (employee.getRoles() != null) {
-                Set<String> nameRole = new HashSet<>();
-                for (Role role : employee.getRoles()) {
-                    nameRole.add(role.getRoleName());
-                }
-                employeeResponse.setNameRole(nameRole);
-            } else {
-                employeeResponse.setNameRole(Collections.emptySet()); // Nếu không có vai trò, gán tập rỗng
-            }
             if(employeeResponse.getEmployeeId()!=userId){
                 employeeResponses.add(employeeResponse);
             }
@@ -101,16 +91,11 @@ public class FarmService {
 //    }
 
     public ResponseEntity<?> createFarm(FarmRequest request){
-
         Farm farm = HandleMapper.INSTANCE.toFarmRequest(request);
         farm.setAddress(request.getAddressFarm());
-        Role role = new Role();
-        role.setRoleName("ADMIN");
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
         Employee employee = HandleMapper.INSTANCE.toFarmRequests(request);
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
-        employee.setRoles(roles);
+        employee.setRole("ADMIN");
         employee.setFarm(farm);
         if(employeeRepository.existsByUsername(request.getUsername())){
             return ResponseEntity.badRequest().body(new Notification("Username đã tồn tại"));
@@ -118,9 +103,6 @@ public class FarmService {
         Inventory inventory = new Inventory();
         inventory.setFarm(farm);
         farmRepository.save(farm);
-        if(!roleRepository.existsByRoleName("ADMIN")){
-            roleRepository.save(role);
-        }
         inventoryRepository.save(inventory);
         employeeRepository.save(employee);
         Notifications notifications = new Notifications();

@@ -6,20 +6,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Employee {
+public class Employee implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int employeeId;
+
     String fullName;
     String username;
     String password;
@@ -29,15 +33,23 @@ public class Employee {
     LocalDate joinDate;
     String email;
     double salary;
-    @ManyToMany(fetch = FetchType.EAGER)
-    Set<Role> roles;
+    String role;
+
     @ManyToOne
     @JoinColumn(name = "farm_id")
     Farm farm;
+
     @OneToMany(mappedBy = "employee")
     List<Task> tasks;
+
     @OneToMany(mappedBy = "employee")
     List<Notifications> notifications;
-    @OneToMany(mappedBy = "employee",fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
     List<Attendance> attendances;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role));
+    }
 }

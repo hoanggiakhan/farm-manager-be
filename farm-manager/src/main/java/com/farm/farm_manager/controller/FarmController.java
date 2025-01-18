@@ -2,10 +2,6 @@ package com.farm.farm_manager.controller;
 
 import com.farm.farm_manager.dto.request.FarmRequest;
 import com.farm.farm_manager.dto.response.*;
-import com.farm.farm_manager.entity.Crop;
-import com.farm.farm_manager.entity.Inventory;
-import com.farm.farm_manager.entity.Role;
-import com.farm.farm_manager.entity.Transaction;
 import com.farm.farm_manager.service.farm.FarmService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
